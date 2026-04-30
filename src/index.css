@@ -28,6 +28,7 @@ body {
   display: grid;
   place-items: center;
   padding: 24px;
+  position: relative;
 }
 
 .game-card {
@@ -228,6 +229,94 @@ body {
   animation: candy-pop 0.35s ease both;
 }
 
+.candy-bank-floating {
+  position: fixed;
+  right: 18px;
+  top: 18px;
+  z-index: 30;
+  width: max-content;
+}
+
+.candy-bank-button {
+  border: none;
+  border-radius: 999px;
+  background: #ff9a1f;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 10px 14px 10px 12px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #d47a12;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.candy-bank-button img {
+  width: 38px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #7ee67e;
+  background: #ffffff;
+  box-shadow: 0 3px 0 #2e9e35;
+}
+
+.candy-bank-button:hover {
+  filter: brightness(1.05);
+}
+
+.candy-bank-button:focus-visible {
+  outline: 3px solid #247c29;
+  outline-offset: 2px;
+}
+
+.candy-bank-popover {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: min(280px, calc(100vw - 36px));
+  background: #ffffff;
+  border: 3px solid #8edd7c;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.candy-bank-title {
+  margin: 0;
+  color: #187734;
+  font-size: 1rem;
+}
+
+.candy-bank-total {
+  margin: 8px 0 10px;
+  color: #19572c;
+}
+
+.candy-bank-images {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.candy-bank-images img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.candy-bank-more {
+  margin: 8px 0 0;
+  color: #247c29;
+  font-size: 0.9rem;
+}
+
+.candy-stats-text {
+  margin: 8px 0 0;
+  color: #187734;
+}
+
 .review-box {
   margin-top: 14px;
   padding: 12px 14px;
@@ -354,6 +443,25 @@ body {
 }
 
 @media (max-width: 640px) {
+  .candy-bank-floating {
+    right: 12px;
+    top: 12px;
+  }
+
+  .candy-bank-button {
+    padding: 8px;
+    border-radius: 50%;
+  }
+
+  .candy-bank-button span {
+    display: none;
+  }
+
+  .candy-bank-button img {
+    width: 34px;
+    height: 34px;
+  }
+
   .answers-grid {
     grid-template-columns: 1fr;
   }

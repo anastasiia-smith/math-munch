@@ -5,7 +5,27 @@ import ResultScreen from './ResultScreen';
 import monsterImage from '../assets/reactions/reaction_0.png';
 
 const TOTAL_QUESTIONS = 5;
+const DAILY_CANDY_STORAGE_PREFIX = 'omnom-candies-';
+const CANDY_UPDATE_EVENT = 'omnom-candy-updated';
 let audioContext;
+
+const getTodayStorageKey = () => {
+  const today = new Date().toISOString().slice(0, 10);
+  return `${DAILY_CANDY_STORAGE_PREFIX}${today}`;
+};
+
+const addCandiesToDailyTotal = (candiesToAdd) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const key = getTodayStorageKey();
+  const currentValue = Number.parseInt(window.localStorage.getItem(key) ?? '0', 10);
+  const safeCurrent = Number.isNaN(currentValue) ? 0 : currentValue;
+  const nextTotal = safeCurrent + candiesToAdd;
+  window.localStorage.setItem(key, String(nextTotal));
+  window.dispatchEvent(new Event(CANDY_UPDATE_EVENT));
+};
 
 const randomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
@@ -188,6 +208,8 @@ function Game() {
     }
 
     if (questionNumber >= TOTAL_QUESTIONS) {
+      const finalScore = isCorrect ? score + 1 : score;
+      addCandiesToDailyTotal(finalScore);
       playSound('finish');
     }
 

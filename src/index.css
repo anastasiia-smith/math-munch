@@ -228,6 +228,39 @@ body {
   animation: candy-pop 0.35s ease both;
 }
 
+.review-box {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 3px dashed #8edd7c;
+  border-radius: 14px;
+  text-align: left;
+}
+
+.review-box h2 {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+  color: #187734;
+}
+
+.review-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.review-list li {
+  margin: 4px 0;
+}
+
+.review-note {
+  color: #cf3f2e;
+}
+
+.perfect-note {
+  margin: 8px 0 0;
+  color: #169a2e;
+}
+
 .play-again {
   margin-top: 14px;
   min-width: 180px;

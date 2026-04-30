@@ -141,6 +141,7 @@ function Game() {
   const [feedbackType, setFeedbackType] = useState('neutral');
   const [isLocked, setIsLocked] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [wrongAnswers, setWrongAnswers] = useState([]);
 
   useEffect(() => {
     setAnswers(createAnswerOptions(currentQuestion.answer));
@@ -173,6 +174,17 @@ function Game() {
 
     if (isCorrect) {
       setScore((prev) => prev + 1);
+    } else {
+      setWrongAnswers((prev) => [
+        ...prev,
+        {
+          first: currentQuestion.first,
+          second: currentQuestion.second,
+          operation: currentQuestion.operation,
+          selectedAnswer,
+          correctAnswer: currentQuestion.answer,
+        },
+      ]);
     }
 
     if (questionNumber >= TOTAL_QUESTIONS) {
@@ -191,6 +203,7 @@ function Game() {
     setFeedbackType('neutral');
     setIsLocked(false);
     setIsComplete(false);
+    setWrongAnswers([]);
   };
 
   if (isComplete) {
@@ -198,6 +211,7 @@ function Game() {
       <ResultScreen
         score={score}
         totalQuestions={TOTAL_QUESTIONS}
+        wrongAnswers={wrongAnswers}
         onPlayAgain={handleRestart}
       />
     );

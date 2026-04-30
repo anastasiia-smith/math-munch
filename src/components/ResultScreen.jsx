@@ -20,15 +20,9 @@ const reactionSprites = Object.entries(
   })
   .map(([, src]) => src)
 
-function ResultScreen({ score, totalQuestions, onPlayAgain }) {
+function ResultScreen({ score, totalQuestions, wrongAnswers, onPlayAgain }) {
   const candyCount = Math.max(1, score)
-  const scoreRatio = totalQuestions > 0 ? score / totalQuestions : 0
-  const omNomReaction =
-    scoreRatio >= 0.8
-      ? reactionSprites[7]
-      : scoreRatio >= 0.5
-        ? reactionSprites[3]
-        : reactionSprites[6]
+  const omNomReaction = reactionSprites[7]
 
   return (
     <section className="game-card result-screen">
@@ -53,6 +47,22 @@ function ResultScreen({ score, totalQuestions, onPlayAgain }) {
         ))}
       </div>
 
+      {wrongAnswers.length > 0 ? (
+        <section className="review-box" aria-label="missed questions review">
+          <h2>Let&apos;s learn these:</h2>
+          <ul className="review-list">
+            {wrongAnswers.map((item, index) => (
+              <li key={`${item.first}-${item.operation}-${item.second}-${index}`}>
+                {item.first} {item.operation} {item.second} = {item.correctAnswer}
+                <span className="review-note"> (you answered {item.selectedAnswer})</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        <p className="perfect-note">Perfect run! You nailed every answer.</p>
+      )}
+
       <button className="play-again" onClick={onPlayAgain}>
         Play Again
       </button>
@@ -63,6 +73,15 @@ function ResultScreen({ score, totalQuestions, onPlayAgain }) {
 ResultScreen.propTypes = {
   score: PropTypes.number.isRequired,
   totalQuestions: PropTypes.number.isRequired,
+  wrongAnswers: PropTypes.arrayOf(
+    PropTypes.shape({
+      first: PropTypes.number.isRequired,
+      second: PropTypes.number.isRequired,
+      operation: PropTypes.oneOf(['+', '-']).isRequired,
+      selectedAnswer: PropTypes.number.isRequired,
+      correctAnswer: PropTypes.number.isRequired,
+    })
+  ).isRequired,
   onPlayAgain: PropTypes.func.isRequired,
 }
 

@@ -659,3 +659,20 @@ body {
     text-align: center;
   }
 }
+
+.back-to-hub-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #247c29;
+  font-weight: 800;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #d2f9cb;
+  color: #1c7430;
+}

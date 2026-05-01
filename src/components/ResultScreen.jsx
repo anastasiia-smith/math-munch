@@ -20,7 +20,7 @@ const reactionSprites = Object.entries(
   })
   .map(([, src]) => src)
 
-function ResultScreen({ score, totalQuestions, wrongAnswers, onPlayAgain }) {
+function ResultScreen({ score, totalQuestions, wrongAnswers, earnedCoin, onPlayAgain }) {
   const candyCount = Math.max(1, score)
   const omNomReaction = reactionSprites[7]
 
@@ -30,6 +30,11 @@ function ResultScreen({ score, totalQuestions, wrongAnswers, onPlayAgain }) {
       <p className="result-text">
         You got <strong>{score}</strong> out of <strong>{totalQuestions}</strong> right!
       </p>
+      {earnedCoin ? (
+        <p className="perfect-note">Perfect 5/5! You earned +1 Om Nom coin.</p>
+      ) : (
+        <p className="result-text small-note">Keep going to collect more coins!</p>
+      )}
 
       <div className="reward-row" aria-label="om nom reaction">
         {omNomReaction ? <img className="result-omnom" src={omNomReaction} alt="Om Nom reaction" /> : null}
@@ -82,6 +87,7 @@ ResultScreen.propTypes = {
       correctAnswer: PropTypes.number.isRequired,
     })
   ).isRequired,
+  earnedCoin: PropTypes.bool.isRequired,
   onPlayAgain: PropTypes.func.isRequired,
 }
 

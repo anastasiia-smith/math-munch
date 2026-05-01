@@ -23,11 +23,11 @@ const reactionSprites = Object.entries(
 const CORRECT_REACTION_INDEX = 0
 const WRONG_REACTION_INDEX = 5
 
-function CandyRow({ count, colorOffset = 0, label }) {
+function CandyRow({ count, colorOffset = 0, label, selectedCandyTheme }) {
   return (
     <div className="candy-row" aria-label={label}>
       {Array.from({ length: count }, (_, index) => {
-        const spriteIndex = (index + colorOffset) % candySprites.length
+        const spriteIndex = (index + colorOffset + selectedCandyTheme * 2) % candySprites.length
         const sprite = candySprites[spriteIndex]
         return (
           <img
@@ -44,7 +44,16 @@ function CandyRow({ count, colorOffset = 0, label }) {
   )
 }
 
-function QuestionCard({ question, answers, onAnswer, feedback, feedbackType, isLocked }) {
+function QuestionCard({
+  question,
+  answers,
+  onAnswer,
+  feedback,
+  feedbackType,
+  isLocked,
+  highlightedAnswer,
+  selectedCandyTheme,
+}) {
   const reactionImage =
     feedbackType === 'correct'
       ? reactionSprites[CORRECT_REACTION_INDEX]
@@ -59,20 +68,37 @@ function QuestionCard({ question, answers, onAnswer, feedback, feedbackType, isL
       </h2>
 
       <div className="visual-math">
-        <CandyRow count={question.first} label="first number candies" />
+        <CandyRow
+          count={question.first}
+          label="first number candies"
+          selectedCandyTheme={selectedCandyTheme}
+        />
         <span className="operator">{question.operation}</span>
-        <CandyRow count={question.second} colorOffset={2} label="second number candies" />
+        <CandyRow
+          count={question.second}
+          colorOffset={2}
+          label="second number candies"
+          selectedCandyTheme={selectedCandyTheme}
+        />
       </div>
 
       <div className="answers-grid">
         {answers.map((answer, index) => (
           <button
-            className="answer-button"
+            className={`answer-button ${highlightedAnswer === answer ? 'hinted' : ''}`}
             key={`${answer}-${index}`}
             onClick={() => onAnswer(answer)}
             disabled={isLocked}
           >
             {answer}
+            {highlightedAnswer === answer ? (
+              <img
+                className="answer-hint-candy"
+                src={candySprites[(selectedCandyTheme * 3 + index) % candySprites.length]}
+                alt=""
+                aria-hidden="true"
+              />
+            ) : null}
           </button>
         ))}
       </div>
@@ -97,12 +123,15 @@ QuestionCard.propTypes = {
   feedback: PropTypes.string.isRequired,
   feedbackType: PropTypes.oneOf(['neutral', 'correct', 'wrong']).isRequired,
   isLocked: PropTypes.bool.isRequired,
+  highlightedAnswer: PropTypes.number,
+  selectedCandyTheme: PropTypes.number.isRequired,
 }
 
 CandyRow.propTypes = {
   count: PropTypes.number.isRequired,
   colorOffset: PropTypes.number,
   label: PropTypes.string.isRequired,
+  selectedCandyTheme: PropTypes.number.isRequired,
 }
 
 export default QuestionCard

@@ -38,6 +38,30 @@ body {
   border: 6px solid #67d45a;
   padding: 20px 24px 28px;
   box-shadow: 0 16px 0 #2e9e35;
+  position: relative;
+}
+
+.start-screen,
+.setup-screen {
+  text-align: center;
+}
+
+.start-bubble {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  background: #ffffff;
+  border: 5px solid #8edd7c;
+  box-shadow: 0 8px 0 #2e9e35;
+  display: grid;
+  place-items: center;
+}
+
+.start-bubble img {
+  width: 105px;
+  height: 105px;
+  object-fit: contain;
 }
 
 .game-header {
@@ -154,6 +178,19 @@ body {
 .answer-button:disabled {
   opacity: 0.8;
   cursor: not-allowed;
+}
+
+.answer-button.hinted {
+  outline: 4px solid #ffcf4a;
+  position: relative;
+}
+
+.answer-hint-candy {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: -8px;
+  right: -8px;
 }
 
 .feedback {
@@ -355,6 +392,147 @@ body {
   min-width: 180px;
 }
 
+.setup-label {
+  margin: 12px 0 8px;
+  color: #247c29;
+}
+
+.setup-choice-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.setup-choice {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: #d2f9cb;
+  color: #1c7430;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.setup-choice.selected,
+.setup-candy-choice.selected {
+  outline: 3px solid #ff9a1f;
+}
+
+.setup-candy-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.setup-candy-choice {
+  border: none;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.setup-candy-choice img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.menu-trigger {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  background: #ff9a1f;
+  color: #fff;
+  box-shadow: 0 5px 0 #d47a12;
+  cursor: pointer;
+  z-index: 40;
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 49, 16, 0.62);
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.menu-panel {
+  width: min(540px, 100%);
+  background: #f7fff0;
+  border-radius: 20px;
+  border: 5px solid #67d45a;
+  padding: 18px;
+  box-shadow: 0 12px 0 #2e9e35;
+  text-align: center;
+}
+
+.menu-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  border: none;
+  background: #ffffff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.menu-coins {
+  margin: 12px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-coins img,
+.coins-inline img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.hint-button {
+  margin-top: 8px;
+}
+
+.hint-tooltip,
+.menu-message,
+.small-note {
+  margin: 8px 0 0;
+}
+
+.hint-tooltip {
+  color: #8f4c00;
+}
+
+.menu-message {
+  color: #247c29;
+}
+
+.coins-inline {
+  margin: 10px auto 0;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.coins-inline p {
+  margin: 0;
+}
+
 @keyframes candy-pop {
   from {
     transform: scale(0.6);
@@ -443,6 +621,13 @@ body {
 }
 
 @media (max-width: 640px) {
+  .menu-trigger {
+    top: 10px;
+    left: 10px;
+    width: 44px;
+    height: 44px;
+  }
+
   .candy-bank-floating {
     right: 12px;
     top: 12px;

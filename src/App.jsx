@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import Game from './components/Game'
-
-const DAILY_CANDY_STORAGE_PREFIX = 'omnom-candies-'
-const CANDY_UPDATE_EVENT = 'omnom-candy-updated'
+import StartScreen from './components/StartScreen'
+import SetupScreen from './components/SetupScreen'
+import GameScreen from './components/GameScreen'
+import ResultScreen from './components/ResultScreen'
+import { CANDY_UPDATE_EVENT, getTodayStorageKey } from './utils/candyBank'
 
 const candySprites = Object.entries(
   import.meta.glob('./assets/swirls/candy_*.png', { eager: true, import: 'default' }),
@@ -14,12 +15,24 @@ const candySprites = Object.entries(
   })
   .map(([, src]) => src)
 
-const getTodayStorageKey = () => {
-  const today = new Date().toISOString().slice(0, 10)
-  return `${DAILY_CANDY_STORAGE_PREFIX}${today}`
+const SCREENS = {
+  start: 'start',
+  setup: 'setup',
+  game: 'game',
+  result: 'result',
 }
 
+const TOTAL_QUESTIONS = 5
+
 function App() {
+  const [screen, setScreen] = useState(SCREENS.start)
+  const [difficulty, setDifficulty] = useState('normal')
+  const [coins, setCoins] = useState(0)
+  const [score, setScore] = useState(0)
+  const [currentQuestion, setCurrentQuestion] = useState(1)
+  const [selectedCandyTheme, setSelectedCandyTheme] = useState(0)
+  const [wrongAnswers, setWrongAnswers] = useState([])
+  const [lastRunEarnedCoin, setLastRunEarnedCoin] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [todayCandyTotal, setTodayCandyTotal] = useState(0)
   const popoverRef = useRef(null)
@@ -82,9 +95,83 @@ function App() {
 
   const candyPreviewCount = useMemo(() => Math.min(todayCandyTotal, 12), [todayCandyTotal])
 
+  const startFreshGame = () => {
+    setScore(0)
+    setCurrentQuestion(1)
+    setWrongAnswers([])
+    setLastRunEarnedCoin(false)
+    setScreen(SCREENS.game)
+  }
+
+  const handleSetupStart = ({ nextDifficulty, nextCandyTheme }) => {
+    setDifficulty(nextDifficulty)
+    setSelectedCandyTheme(nextCandyTheme)
+    startFreshGame()
+  }
+
+  const handleGameFinish = ({ finalScore, finalWrongAnswers, earnedCoin }) => {
+    setScore(finalScore)
+    setWrongAnswers(finalWrongAnswers)
+    setLastRunEarnedCoin(earnedCoin)
+    if (earnedCoin) {
+      setCoins((prev) => prev + 1)
+    }
+    setScreen(SCREENS.result)
+  }
+
+  const handleDifficultyChange = (nextDifficulty) => {
+    setDifficulty(nextDifficulty)
+    setScore(0)
+    setCurrentQuestion(1)
+  }
+
+  const renderScreen = () => {
+    if (screen === SCREENS.start) {
+      return <StartScreen onPlay={() => setScreen(SCREENS.setup)} />
+    }
+
+    if (screen === SCREENS.setup) {
+      return (
+        <SetupScreen
+          defaultDifficulty={difficulty}
+          defaultCandyTheme={selectedCandyTheme}
+          onStartGame={handleSetupStart}
+        />
+      )
+    }
+
+    if (screen === SCREENS.game) {
+      return (
+        <GameScreen
+          difficulty={difficulty}
+          coins={coins}
+          score={score}
+          currentQuestion={currentQuestion}
+          totalQuestions={TOTAL_QUESTIONS}
+          selectedCandyTheme={selectedCandyTheme}
+          onScoreChange={setScore}
+          onQuestionChange={setCurrentQuestion}
+          onCoinsChange={setCoins}
+          onDifficultyChange={handleDifficultyChange}
+          onFinish={handleGameFinish}
+        />
+      )
+    }
+
+    return (
+      <ResultScreen
+        score={score}
+        totalQuestions={TOTAL_QUESTIONS}
+        wrongAnswers={wrongAnswers}
+        earnedCoin={lastRunEarnedCoin}
+        onPlayAgain={startFreshGame}
+      />
+    )
+  }
+
   return (
     <main className="app-shell">
-      <Game />
+      {renderScreen()}
       <div className="candy-bank-floating">
         <button
           ref={buttonRef}

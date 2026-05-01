@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import coinImage from '../assets/img/coin.png';
+import omNomImage from '../assets/reactions/reaction_3.png';
 
 function GameMenu({
   isOpen,
@@ -11,9 +12,7 @@ function GameMenu({
   hintMessage,
 }) {
   const onBackToHub = () => {
-    // console.log('back to hub');
-    // go to home page
-    window.location.href = '/';
+    window.location.reload();
   };
   return (
     <>
@@ -41,14 +40,12 @@ function GameMenu({
             ✕
           </button>
           <section className='menu-panel'>
-            {/* add go back to hub button */}
             <button
               type='button'
               className='back-to-hub-button'
               onClick={onBackToHub}
               aria-label='Close game menu'
             >
-              {/* a simple left arrow */}
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 width='24'
@@ -85,14 +82,22 @@ function GameMenu({
               </p>
             </div>
             <br />
+            <div className='hint-bubble'>
+              <img
+                src={omNomImage}
+                alt='Hint bubble'
+                aria-hidden='true'
+                className='monster-image'
+              />
+            </div>
             <button
               type='button'
               className='play-again hint-button'
               onClick={onHintClick}
             >
-              Hint
+              Hint (1 coin)
             </button>
-            <p className='menu-message'>Costs 1 omnom coin</p>
+            {/* <p className='menu-message'>Costs 1 omnom coin</p> */}
             {hintMessage ? <p className='hint-tooltip'>{hintMessage}</p> : null}
           </section>
         </div>

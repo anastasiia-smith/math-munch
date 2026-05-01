@@ -20,7 +20,10 @@ const addCandiesToDailyTotal = (candiesToAdd) => {
   }
 
   const key = getTodayStorageKey();
-  const currentValue = Number.parseInt(window.localStorage.getItem(key) ?? '0', 10);
+  const currentValue = Number.parseInt(
+    window.localStorage.getItem(key) ?? '0',
+    10
+  );
   const safeCurrent = Number.isNaN(currentValue) ? 0 : currentValue;
   const nextTotal = safeCurrent + candiesToAdd;
   window.localStorage.setItem(key, String(nextTotal));
@@ -235,6 +238,7 @@ function Game() {
         totalQuestions={TOTAL_QUESTIONS}
         wrongAnswers={wrongAnswers}
         onPlayAgain={handleRestart}
+        // difficulty={difficulty}
       />
     );
   }

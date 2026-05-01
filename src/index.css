@@ -123,13 +123,15 @@ body {
 
 .operator {
   font-size: 2.2rem;
+  /* line-height: 0.5; */
   color: #ff7f11;
 }
 
 .candy-row {
-  min-height: 76px;
+  /* min-height: 36px; */
   display: grid;
   grid-template-columns: repeat(5, 30px);
+  /* border: 1px solid #167f31; */
   gap: 8px;
   justify-content: center;
   align-content: center;
@@ -137,6 +139,8 @@ body {
 }
 
 .candy {
+  /* border: 1px solid #167f31; */
+  /* padding */
   width: 30px;
   height: 30px;
   object-fit: contain;
@@ -424,6 +428,14 @@ body {
   justify-content: center;
   gap: 10px;
   margin-bottom: 12px;
+  flex-wrap: wrap;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  align-items: center;
+  height: 110px;
+  overflow: visible;
 }
 
 .setup-candy-choice {
